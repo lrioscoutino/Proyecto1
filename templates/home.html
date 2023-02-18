@@ -4,8 +4,35 @@
 <br>
 <br>
 <br>
+<br>
 
-{% for student in students %}
-{{student.name}}<br>
-{% endfor %}
+<a class="btn btn-success" href="{% url 'add_student' %}">Agregar Estudiante</a>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#id</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Fecha Nacimiento</th>
+      <th scope="col"># Control</th>
+        <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for student in students %}
+    <tr>
+      <th scope="row"><a href="editar">{{student.id}}</a></th>
+      <td>{{student.name}}</td>
+      <td>{{student.birth_date}}</td>
+      <td>{{student.control_number}}</td>
+        <td>{% if student.status %}
+          <a class="btn btn-success">DesActivar</a>
+          {% endif %}
+        </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+
+
 {% endblock %}
