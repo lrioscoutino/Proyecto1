@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+<!-- Button trigger modal -->
 <a class="btn btn-success" href="{% url 'add_student_view' %}">Agregar Estudiante</a>
 <table class="table">
   <thead>
@@ -18,10 +19,16 @@
       <td>{{student.birth_date}}</td>
       <td>{{student.status}}</td>
       <td><a class="btn btn-primary" href="{% url 'edit_student_view' student_id=student.id %}">Editar</a></td>
-      <td><a class="btn btn-danger" href="{% url 'edit_student_view' student_id=student.id %}">Eliminar</a></td>
+      <td><a class="btn btn-danger" href="{% url 'delete_student_view' student_id=student.id %}">Eliminar</a></td>
     </tr>
   {% endfor %}
   </tbody>
 </table>
+{% endblock %}
+{% block js %}
+
+$(function(){
+
+});
 
 {% endblock %}
