@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from users.models import Students
 from django.urls import reverse_lazy, reverse
 from django.views.generic import (
     View,
-    CreateView
+    CreateView,
 )
 
 
@@ -32,7 +32,6 @@ class Home(View):
 
 
 class AddStudent(CreateView):
-    success_url = reverse_lazy('home_view')
 
     def get(self, request):
         return render(request, "users/form_add.html")
@@ -64,6 +63,21 @@ def add_student(request):
         return reverse_lazy('home_view')
     else:
         return render(request, "users/form_add.html")
+
+
+class EditStudent(View):
+    def get(self, request, student_id):
+        student = Students.objects.get(id=student_id)
+        return render(request, "users/form_add.html", {'student': student})
+
+    def post(self, request, student_id):
+        student = Students.objects.get(id=student_id)
+        student.name = request.POST.get('name')
+        student.address = request.POST.get('address')
+        student.birth_date = request.POST.get('birth_date')
+        student.status = True
+        student.save()
+        return HttpResponseRedirect(reverse_lazy('home_view'))
 
 
 def edit_student(request, student_id):
