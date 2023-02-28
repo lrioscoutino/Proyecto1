@@ -5,6 +5,9 @@
   Launch demo modal
 </button>
 <a class="btn btn-success" href="{% url 'add_student_view' %}">Agregar Estudiante</a>
+<a class="btn btn-success" id="btnAddStudent" >Agregar Estudiante AJAX</a>
+
+
 <table class="table">
   <thead>
     <tr>
@@ -31,12 +34,30 @@
 {% block js %}
 
 $(function(){
-alert("Hola desde Home");
+console.log("Hola desde home")
 
-$('#exampleModal').on('shown.bs.modal', function () {
-  $('#myInput').trigger('focus')
-});
-
+$("#btnAddStudent").on('click', function(){
+  console.log("Add Student")
+  token = 'M0FHyoseWBz1gUWsZtG9yugCTUW4qeuXxmluLivJmPGyh6G4o9bdWuSXyW94a61f'
+  $.ajax({
+        url: "http://127.0.0.1:8000/add-student/",
+        contentType: 'application/json',
+        method: 'POST',
+        dataType: "json",
+        headers: {'X-CSRFToken':token},
+        data: JSON.stringify(
+        {'name':'Manuel',
+        'address':'Avenida Las Rosas',
+        'birth_date':'2002-12-12'
+        }),
+        success: function (response) {
+         console.log(response);
+        },
+        error: function (response) {
+          console.log(response);
+        }
+      });
+})
 
 
 });

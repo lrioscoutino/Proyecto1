@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from users.models import Students
@@ -31,16 +32,23 @@ class Home(View):
         return render(request, 'home.html', {'students': students})
 
 
-class AddStudent(CreateView):
+class AddStudent(View):
 
     def get(self, request):
         return render(request, "users/form_add.html")
 
     def post(self, request):
+        body = {}
+        if not request.POST:
+            body = json.loads(request.body.decode('utf-8'))
+
         student = Students()
-        student.name = request.POST.get('name')
-        student.address = request.POST.get('address')
-        student.birth_date = request.POST.get('birth_date')
+        student.name = request.POST.get('name',
+                                        body.get('name'))
+        student.address = request.POST.get('address',
+                                           body.get('address'))
+        student.birth_date = request.POST.get('birth_date',
+                                              body.get('birth_date'))
         student.status = True
         student.save()
         return HttpResponseRedirect(reverse_lazy('home_view'))
@@ -97,3 +105,4 @@ def delete_student(request, student_id):
     student = Students.objects.get(id=student_id)
     student.delete()
     return HttpResponseRedirect(reverse_lazy('home_view'))
+
