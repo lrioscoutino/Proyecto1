@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from users.views import (
     Home,
     AddStudent,
@@ -10,6 +10,7 @@ from users.views import (
     EditStudent,
 )
 from django.contrib.auth.views import LoginView, LogoutView
+from users.routers import router
 
 urlpatterns = [
     path('home2/', home, name='home2_view'),
@@ -19,5 +20,7 @@ urlpatterns = [
     path('delete-student/<int:student_id>/', delete_student, name='delete_student_view'),
     path('about/', about, name='about_view'),
     path('', LoginView.as_view(template_name='base.html'), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout')
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('api/v1/', include(router.urls))
+
 ]
